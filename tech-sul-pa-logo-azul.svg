@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 60" role="img" aria-label="Tech Sul PA logo azul">
+  <title>Tech Sul PA</title>
+  <desc>Logo da comunidade Tech Sul PA — variante azul</desc>
+
+  <!-- Ícone: hexágono com símbolo de terminal -->
+  <polygon points="30,4 51,16 51,44 30,56 9,44 9,16" fill="#378ADD"/>
+  <polyline points="18,20 36,30 18,40" fill="none" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Wordmark -->
+  <text x="70" y="26" font-family="'Courier New', Courier, monospace" font-weight="700" font-size="22" fill="#0C447C">TECH</text>
+  <text x="71" y="47" font-family="'Courier New', Courier, monospace" font-weight="400" font-size="13" fill="#378ADD" letter-spacing="4">SUL PA</text>
+</svg>

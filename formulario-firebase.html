@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro · Tech Sul PA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<!-- FIREBASE: substitua pelos seus dados do projeto -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  // Substitua aqui pelas suas credenciais do Firebase Console.
+ const firebaseConfig = {
+  apiKey: "AIzaSyB52VBZc5PU6TQ3UCsiZbQ96iFDRNLOhmk",
+  authDomain: "form-tech-sul-pa.firebaseapp.com",
+  projectId: "form-tech-sul-pa",
+  storageBucket: "form-tech-sul-pa.firebasestorage.app",
+  messagingSenderId: "218720164872",
+  appId: "1:218720164872:web:4bb5e630c676f06677c5bd"
+};
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  window.enviarCadastro = async function(dados) {
+    try {
+      const docRef = await addDoc(collection(db, "membros"), {
+        ...dados,
+        criadoEm: serverTimestamp()
+      });
+      console.log("Salvo com ID:", docRef.id);
+      return { sucesso: true, id: docRef.id };
+    } catch (erro) {
+      console.error("Erro ao salvar:", erro);
+      return { sucesso: false, erro: erro.message };
+    }
+  };
+
+  window.irParaDiscord = function() {
+    window.location.href = "https://discord.gg/ycFuMSFgzr";
+  };
+</script>
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #378ADD;
+    --blue-dark: #0C447C;
+    --blue-soft: #EAF4FF;
+    --green: #1D9E75;
+    --green-dark: #085041;
+    --green-soft: #E1F5EE;
+    --red: #E24B4A;
+    --red-soft: #FFF0F0;
+    --ink: #102033;
+    --muted: #64748B;
+    --paper: #FBFCFA;
+    --line: #D8E5EF;
+    --white: #FFFFFF;
+  }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(55,138,221,0.16), transparent 32%),
+      radial-gradient(circle at 86% 2%, rgba(29,158,117,0.14), transparent 28%),
+      linear-gradient(180deg, #F7FBFF 0%, var(--paper) 100%);
+    color: var(--ink);
+    font-family: 'Sora', sans-serif;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; }
+  img { max-width: 100%; }
+
+  .page {
+    width: min(1120px, calc(100% - 2.5rem));
+    margin: 0 auto;
+    padding: 2rem 0 3rem;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    animation: slideDown 0.65s ease both;
+  }
+
+  .logo img {
+    display: block;
+    width: 172px;
+    height: auto;
+  }
+
+  .back-link {
+    color: var(--blue-dark);
+    border: 1px solid rgba(12,68,124,0.18);
+    border-radius: 7px;
+    padding: 0.72rem 1rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+
+  .back-link:hover {
+    background: var(--blue-soft);
+    border-color: rgba(55,138,221,0.45);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.78fr) minmax(0, 1.22fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .intro {
+    position: sticky;
+    top: 2rem;
+    animation: fadeUp 0.85s ease 0.12s both;
+  }
+
+  .label,
+  .section-label {
+    color: var(--green);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .intro h1 {
+    margin-top: 1rem;
+    color: var(--ink);
+    font-size: clamp(2.4rem, 5vw, 4.7rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 0.96;
+    overflow-wrap: anywhere;
+  }
+
+  .intro h1 span {
+    display: block;
+    color: var(--blue);
+  }
+
+  .intro p {
+    margin-top: 1.25rem;
+    color: #496178;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .brand-card {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 2rem;
+    padding: 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background:
+      linear-gradient(135deg, rgba(255,255,255,0.88), rgba(234,244,255,0.76)),
+      repeating-linear-gradient(90deg, rgba(12,68,124,0.05) 0 1px, transparent 1px 32px),
+      repeating-linear-gradient(0deg, rgba(12,68,124,0.05) 0 1px, transparent 1px 32px);
+    box-shadow: 0 24px 70px rgba(12,68,124,0.1);
+    animation: softFloat 5.5s ease-in-out infinite;
+  }
+
+  .brand-card img {
+    width: min(100%, 280px);
+  }
+
+  .brand-card small {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  form {
+    width: 100%;
+    min-width: 0;
+    padding: clamp(1.25rem, 4vw, 2rem);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.86);
+    box-shadow: 0 24px 70px rgba(12,68,124,0.1);
+    animation: fadeScale 0.9s ease 0.22s both;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .form-group {
+    min-width: 0;
+    margin-bottom: 1.1rem;
+  }
+
+  label {
+    display: block;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    margin-bottom: 0.45rem;
+    text-transform: uppercase;
+  }
+
+  input,
+  select {
+    width: 100%;
+    min-height: 48px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    color: var(--ink);
+    font-family: 'Sora', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    padding: 0.82rem 0.95rem;
+    min-width: 0;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  input::placeholder { color: #9AA9B8; }
+
+  input:focus,
+  select:focus {
+    background: #FFFFFF;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 4px rgba(55,138,221,0.12);
+    transform: translateY(-1px);
+  }
+
+  select {
+    appearance: none;
+    background-image:
+      linear-gradient(45deg, transparent 50%, var(--blue-dark) 50%),
+      linear-gradient(135deg, var(--blue-dark) 50%, transparent 50%);
+    background-position:
+      calc(100% - 18px) 21px,
+      calc(100% - 13px) 21px;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 1.5rem 0;
+  }
+
+  .section-label {
+    display: block;
+    margin-bottom: 1.1rem;
+  }
+
+  .checkbox-group {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 0.72rem;
+    min-height: 44px;
+    padding: 0.72rem 0.85rem;
+    border: 1px solid var(--line);
+    border-radius: 7px;
+    background: #FFFFFF;
+    color: #496178;
+    cursor: pointer;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.92rem;
+    letter-spacing: 0;
+    text-transform: none;
+    overflow-wrap: anywhere;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .checkbox-item:hover {
+    background: var(--blue-soft);
+    border-color: rgba(55,138,221,0.38);
+    box-shadow: 0 12px 26px rgba(12,68,124,0.08);
+    transform: translateX(4px);
+  }
+
+  .checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--green);
+    flex-shrink: 0;
+  }
+
+  .required {
+    color: var(--red);
+    margin-left: 2px;
+  }
+
+  .btn-submit {
+    width: 100%;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.4rem;
+    background: var(--blue);
+    border: 0;
+    border-radius: 7px;
+    box-shadow: 0 16px 34px rgba(55,138,221,0.22);
+    color: var(--white);
+    cursor: pointer;
+    font-family: 'Sora', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.35;
+    padding: 0.85rem 1rem;
+    text-align: center;
+    transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  }
+
+  .btn-submit:hover:not(:disabled) {
+    background: var(--blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 38px rgba(12,68,124,0.24);
+  }
+
+  .btn-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.64;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    display: none;
+    border: 2px solid rgba(255,255,255,0.35);
+    border-radius: 50%;
+    border-top-color: var(--white);
+    animation: spin 0.7s linear infinite;
+  }
+
+  .alert {
+    display: none;
+    margin-top: 1rem;
+    border-radius: 7px;
+    padding: 1rem 1.1rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .alert-success {
+    background: var(--green-soft);
+    border: 1px solid rgba(29,158,117,0.35);
+    color: var(--green-dark);
+  }
+
+  .alert-error {
+    background: var(--red-soft);
+    border: 1px solid rgba(226,75,74,0.35);
+    color: #791F1F;
+  }
+
+  .rodape {
+    margin-top: 2rem;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeScale {
+    from { opacity: 0; transform: translateY(18px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes softFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .form-group,
+    .section-label,
+    .divider {
+      animation: fadeUp 0.6s ease both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 18%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; }
+    .intro { position: static; }
+    .brand-card { max-width: 420px; }
+  }
+
+  @media (max-width: 620px) {
+    .page { width: min(100% - 1.5rem, 1120px); padding-top: 1.2rem; }
+    .topbar {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .logo img { width: 150px; }
+    .back-link { width: 100%; text-align: center; }
+    .intro h1 {
+      font-size: clamp(2.35rem, 13vw, 3.75rem);
+      line-height: 1;
+    }
+    .brand-card {
+      max-width: none;
+      margin-top: 1.4rem;
+    }
+    .form-row { grid-template-columns: 1fr; }
+    form { padding: 1rem; border-radius: 7px; }
+    .checkbox-item { align-items: flex-start; }
+    .btn-submit { min-height: 56px; }
+  }
+
+  @media (max-width: 380px) {
+    .page { width: min(100% - 1rem, 1120px); }
+    .intro h1 { font-size: clamp(2rem, 12vw, 2.7rem); }
+    .brand-card,
+    form {
+      padding: 0.9rem;
+    }
+    label { font-size: 0.66rem; }
+    input,
+    select {
+      font-size: 0.9rem;
+      padding-inline: 0.78rem;
+    }
+    .checkbox-item {
+      padding: 0.68rem 0.7rem;
+      font-size: 0.88rem;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <a class="logo" href="tech-sul-pa.html" aria-label="Tech Sul PA">
+      <img src="tech-sul-pa-logo-azul.svg" alt="Tech Sul PA">
+    </a>
+    <a class="back-link" href="tech-sul-pa.html">Voltar para o site</a>
+  </header>
+
+  <main class="layout">
+    <section class="intro">
+      <span class="label">Cadastro oficial</span>
+      <h1>Quero fazer parte <span>da Tech Sul PA.</span></h1>
+      <p>Preencha seus dados para entrar na comunidade de tecnologia de Xinguara e região. Quando o Firebase estiver configurado, este formulário salvará tudo na coleção de membros.</p>
+      <div class="brand-card" aria-hidden="true">
+        <img src="tech-sul-pa-logo-verde.svg" alt="">
+        <small>Comunidade gratuita, aberta e feita para aproximar quem constrói tecnologia no sul do Pará.</small>
+      </div>
+    </section>
+
+    <form id="cadastroForm" novalidate>
+      <span class="section-label">01 · Dados pessoais</span>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nome">Nome completo <span class="required">*</span></label>
+          <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+        </div>
+        <div class="form-group">
+          <label for="apelido">Como quer ser chamado(a)?</label>
+          <input type="text" id="apelido" name="apelido" placeholder="Apelido ou nome social">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="email">E-mail <span class="required">*</span></label>
+          <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+        </div>
+        <div class="form-group">
+          <label for="whatsapp">WhatsApp</label>
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="(94) 9 0000-0000">
+        </div>
+      </div>
+
+      <hr class="divider">
+      <span class="section-label">02 · Localização</span>
+
+      <div class="form-group">
+        <label for="cidade">Você mora em Xinguara ou região? <span class="required">*</span></label>
+        <select id="cidade" name="cidade" required>
+          <option value="">Selecione...</option>
+          <option value="xinguara">Sim, moro em Xinguara</option>
+          <option value="regiao">Moro na região (Sul do Pará)</option>
+          <option value="fora">Não, mas quero participar</option>
+        </select>
+      </div>
+
+      <hr class="divider">
+      <span class="section-label">03 · Perfil técnico</span>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="area">Área de atuação <span class="required">*</span></label>
+          <select id="area" name="area" required>
+            <option value="">Selecione...</option>
+            <option value="dev">Desenvolvimento de Software</option>
+            <option value="design">Design / UX</option>
+            <option value="dados">Dados / IA</option>
+            <option value="infra">Infraestrutura / DevOps</option>
+            <option value="estudante">Estudante de TI</option>
+            <option value="outro">Outro / Entusiasta</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="nivel">Nível de experiência <span class="required">*</span></label>
+          <select id="nivel" name="nivel" required>
+            <option value="">Selecione...</option>
+            <option value="iniciante">Iniciante (0-1 ano)</option>
+            <option value="intermediario">Intermediário (1-3 anos)</option>
+            <option value="avancado">Avançado (3+ anos)</option>
+          </select>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <span class="section-label">04 · O que você busca?</span>
+
+      <div class="form-group">
+        <div class="checkbox-group">
+          <label class="checkbox-item">
+            <input type="checkbox" name="objetivo" value="networking"> Fazer networking com outros profissionais
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="objetivo" value="aprender"> Aprender com a comunidade
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="objetivo" value="ensinar"> Compartilhar conhecimento
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="objetivo" value="vagas"> Encontrar vagas ou freelas
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" name="objetivo" value="projetos"> Colaborar em projetos
+          </label>
+        </div>
+      </div>
+
+      <hr class="divider">
+      <span class="section-label">05 · Extras</span>
+
+      <div class="form-group">
+        <label for="redes">GitHub / LinkedIn / Instagram</label>
+        <input type="text" id="redes" name="redes" placeholder="Links ou @username">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="ajudar">Quer ajudar a organizar eventos?</label>
+          <select id="ajudar" name="ajudar">
+            <option value="">Selecione...</option>
+            <option value="sim">Sim, com certeza!</option>
+            <option value="talvez">Talvez, me contem mais</option>
+            <option value="nao">Por enquanto não</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="como_conheceu">Como ficou sabendo?</label>
+          <select id="como_conheceu" name="como_conheceu">
+            <option value="">Selecione...</option>
+            <option value="instagram">Instagram</option>
+            <option value="whatsapp">Grupo de WhatsApp</option>
+            <option value="amigo">Indicação de amigo</option>
+            <option value="facebook">Facebook</option>
+            <option value="outro">Outro</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" id="btnSubmit">
+        <span id="btnTexto">Enviar cadastro e entrar no Discord</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+
+      <div class="alert alert-success" id="alertSucesso">
+        Cadastro enviado com sucesso! Redirecionando você para o Discord da Tech Sul PA.
+      </div>
+
+      <div class="alert alert-error" id="alertErro">
+        Erro ao enviar cadastro. Verifique sua conexão e tente novamente.
+      </div>
+    </form>
+  </main>
+
+  <p class="rodape">Tech Sul PA · Xinguara, Pará · Comunidade gratuita e aberta</p>
+</div>
+
+<script>
+  document.getElementById('cadastroForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('btnSubmit');
+    const spinner = document.getElementById('spinner');
+    const btnTexto = document.getElementById('btnTexto');
+    const alertSucesso = document.getElementById('alertSucesso');
+    const alertErro = document.getElementById('alertErro');
+
+    alertSucesso.style.display = 'none';
+    alertErro.style.display = 'none';
+
+    const camposObrigatorios = ['nome', 'email', 'cidade', 'area', 'nivel'];
+    let valido = true;
+
+    camposObrigatorios.forEach((id) => {
+      const campo = document.getElementById(id);
+      if (!campo.value.trim()) {
+        campo.style.borderColor = '#E24B4A';
+        valido = false;
+      } else {
+        campo.style.borderColor = '';
+      }
+    });
+
+    if (!valido) {
+      alertErro.textContent = 'Preencha todos os campos obrigatórios marcados com *.';
+      alertErro.style.display = 'block';
+      return;
+    }
+
+    const objetivos = Array.from(
+      document.querySelectorAll('input[name="objetivo"]:checked')
+    ).map((checkbox) => checkbox.value);
+
+    const dados = {
+      nome: document.getElementById('nome').value.trim(),
+      apelido: document.getElementById('apelido').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      whatsapp: document.getElementById('whatsapp').value.trim(),
+      cidade: document.getElementById('cidade').value,
+      area: document.getElementById('area').value,
+      nivel: document.getElementById('nivel').value,
+      objetivos: objetivos,
+      redes: document.getElementById('redes').value.trim(),
+      ajudar: document.getElementById('ajudar').value,
+      como_conheceu: document.getElementById('como_conheceu').value
+    };
+
+    btn.disabled = true;
+    btnTexto.style.display = 'none';
+    spinner.style.display = 'block';
+
+    const resultado = await window.enviarCadastro(dados);
+
+    btn.disabled = false;
+    btnTexto.style.display = 'block';
+    spinner.style.display = 'none';
+
+    if (resultado.sucesso) {
+      this.reset();
+      alertSucesso.style.display = 'block';
+      setTimeout(() => {
+        window.irParaDiscord();
+      }, 900);
+    } else {
+      alertErro.textContent = 'Erro ao enviar: ' + resultado.erro;
+      alertErro.style.display = 'block';
+    }
+  });
+
+  document.querySelectorAll('input, select').forEach((elemento) => {
+    elemento.addEventListener('input', () => {
+      elemento.style.borderColor = '';
+    });
+  });
+</script>
+</body>
+</html>
